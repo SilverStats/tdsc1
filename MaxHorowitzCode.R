@@ -50,10 +50,16 @@ ggplot(bike, aes(x = starttimeseconds)) + geom_histogram(bins = 20,
 ggplot(bike, aes(x = start.station.latitude, y = start.station.longitude)) +
   geom_point()
 
-data.rows.counted <- dplyr::group_by(bike, start.station.latitude, start.station.longitude, 
-                start.station.name) %>% tally(sort = TRUE)
+data.rows.counted
+  
+bike.gender.grouped <- dplyr::group_by(bike, start.station.latitude,
+                                       start.station.longitude, 
+                start.station.name) %>% tally(gender == 2, sort = TRUE) 
 
-ggplot(data.rows.counted, aes(x = start.station.latitude, y = start.station.longitude)) +
+
+
+
+ggplot(data.rows.counted[order(data.rows.counted$n),], aes(x = start.station.latitude, y = start.station.longitude)) +
   geom_point(aes(size = n))
 
 ## Finding the location of box for map
@@ -81,7 +87,7 @@ ggmap(mymap) + geom_point(aes(x = start.station.longitude,
 
 grid.bikes.manhat <- do.call(c, lapply(1:11, FUN = function(x) {paste(x, "avenue and", 
                                                      seq(from = 5, to = 80, by = 5),
-                                                     "Street", sep = c(" ", " ", "", " "))
+                                                     "Street", ", Manhattan", sep = c(" ", " ", "", " "))
                                               }))
 
 grid.bikes.misc <- c("Cadman Plaza Park", 
@@ -99,9 +105,31 @@ grid.bikes.misc <- c("Cadman Plaza Park",
                      "Greenpoint Avenue and Manhattan Avenue, Brooklyn",
                      "Grand Street and Bushwick Avenue, Brooklyn")
 
-grid.long.lat <- geocode(c(grid.bikes, grid.bikes.misc))
+grid.long.lat <- geocode(c(grid.bikes.manhat, grid.bikes.misc))
 
 nyc.grid.points.df <- data.frame(Location = c(grid.bikes, grid.bikes.misc),
                                  Longitude = grid.long.lat[,1],
                                  Latitude = grid.long.lat[,2])
+
+nyc.grid.points.df <- nyc.grid.points.df[-which(nyc.grid.points.df$Longitude < -80),]
+
+save(nyc.grid.points.df, file = "nyc.grid.points.RData")
+
+#############################
+## New Station Locations ####
+
+long.newstat <- nyc.grid.points.df$Longitude[c(175,96)]
+lat.newstat <- nyc.grid.points.df$Latitude[c(175,96)]
+
+new.stat.data <- data.frame(long = long.newstat,
+                            lat = lat.newstat)
+
+ggmap(mymap) + geom_point(aes(x = long ,
+                             y = lat), data = new.stat.data,
+                          size= 5.5, colour = "darkorchid") +
+  ggtitle("Citi Bike New Station Recommendations:
+          Williamsburg and West Village") + xlab("Longitude") +
+  ylab("Latitude") + 
+  theme(plot.title=element_text(family="sans", face="bold", size=18),
+        axis.title=element_text(family="sans", size=14,face="bold"))
 
