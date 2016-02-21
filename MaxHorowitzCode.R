@@ -36,12 +36,12 @@ bike$starttimeseconds <- period_to_seconds(hms(timeonlystart))
 
 ggplot(bike, aes(x = starttimeseconds)) + geom_histogram(bins = 20,
                                           aes(alpha = ..density..))
-<<<<<<< HEAD
+#<<<<<<< HEAD
                                           
 
 min(bike$starttimeseconds)
 
-=======
+#=======
 
 ggplot(bike, aes(x = start.station.latitude, y = start.station.longitude)) +
   geom_point()
@@ -79,4 +79,4 @@ ggplot(data.rows.counted, aes(y = start.station.latitude, x = start.station.long
   geom_point(aes(size = n))
 
 bike[which(bike$end.station.longitude == max(bike$end.station.longitude)),]
->>>>>>> b65f10ba442eb679d78c5d7988d4afd53321663b
+#>>>>>>> b65f10ba442eb679d78c5d7988d4afd53321663b
