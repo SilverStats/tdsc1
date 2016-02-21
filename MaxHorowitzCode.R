@@ -124,12 +124,23 @@ lat.newstat <- nyc.grid.points.df$Latitude[c(175,96)]
 new.stat.data <- data.frame(long = long.newstat,
                             lat = lat.newstat)
 
-ggmap(mymap) + geom_point(aes(x = long ,
+final.recs <- ggmap(mymap) + geom_point(aes(x = long ,
                              y = lat), data = new.stat.data,
                           size= 5.5, colour = "darkorchid") +
   ggtitle("Citi Bike New Station Recommendations:
           Williamsburg and West Village") + xlab("Longitude") +
-  ylab("Latitude") + 
-  theme(plot.title=element_text(family="sans", face="bold", size=18),
-        axis.title=element_text(family="sans", size=14,face="bold"))
+  ylab("Latitude")
+
+first.plot <- ggmap(mymap) + geom_point(aes(x = start.station.longitude,
+                                            y = start.station.latitude,
+                                            color = sqrt(n)),
+                                        data = data.rows.counted) +
+  scale_color_gradient(low = "royal blue", high = "dark red",
+                       name = "Square Root of Rentals") +
+  ggtitle("Number of Rentals for Each Citi Bike Station") +
+  xlab("Longitude") + ylab("Latitude") + 
+  theme(legend.position=c(.85, 0.15))
+
+grid.arrange(final.recs, first.plot, ncol = 2)
+  
 
