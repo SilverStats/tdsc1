@@ -70,3 +70,16 @@ grid_sp <- sapply(1:nrow(nyc.grid.points.df),
 distances.stations <- data.frame(t(sapply(grid_sp, closest_station)))
 distances.tracts <- data.frame(t(sapply(grid_sp, closest_tract)))
 
+
+
+mean.station.users <- sapply(1:nrow(distances.stations), function(i) {
+                                rows <- as.numeric(distances.stations[i,])
+                                return(mean(data.rows.counted$n[rows]))})
+
+
+pop.cens.2010$CT2010 <- pop.cens.2010$Census.Tract
+merged.frame <- inner_join(census.clean.back, pop.cens.2010)
+
+mean.tract.people <- sapply(1:nrow(distances.tracts), function(i) {
+    rows <- as.numeric(distances.tracts[i,])
+    return(mean(merged.frame$Population[rows]))})
