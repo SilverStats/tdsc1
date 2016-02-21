@@ -19,6 +19,16 @@ library(grid)
 bike.orig <- read.csv("20150708-citibike-tripdata.csv") 
 bike <- read.csv("20150708-citibike-tripdata.csv") 
 
+## Merged Census Dataframes
+
+pop.cens.tract <- read.csv("pop_by_tract.csv")
+pop.cens.2010 <- subset(pop.cens.tract, Year == "2010")
+
+nycensus.2010 <- read.csv("nycb2010wi.csv")
+
+census.merged <- merge(pop.cens.2010, nycensus.2010,
+                       by.x = "Census.Tract",
+                       by.y = "CT2010")
 ######################################################
 ### EDA 
 
@@ -46,30 +56,23 @@ data.rows.counted <- dplyr::group_by(bike, start.station.latitude, start.station
 ggplot(data.rows.counted, aes(x = start.station.latitude, y = start.station.longitude)) +
   geom_point(aes(size = n))
 
-min(bike$start.station.latitude)
-max(bike$start.station.latitude)
-min(bike$start.station.longitude)
-max(bike$start.station.longitude)
+## Finding the location of box for map
 
 maplocation <- c(min(bike$start.station.longitude),
                  min(bike$start.station.latitude),
                   max(bike$start.station.longitude),
                   max(bike$start.station.latitude))
 
+# Creating Maps and overlaying points
+
 mymap <- get_map(location= maplocation,
-        source= "stamen", crop=FALSE, resolution = "high")
+        source= "google", crop=FALSE, zoom = 12)
 
-ggmap(mymap) + geom_point(aes(x = start.station.longitude, 
-                              y = start.station.longitude),
-                         data = data.rows.counted)
+ggmap(mymap) + geom_point(aes(x = start.station.longitude,
+                          y = start.station.latitude,
+                          color = n),
+                          data = data.rows.counted) +
+  scale_color_gradient(low = "red", high = "green")
 
 
-### GGPLOT with Overalyed Map
-
-citibike <- readJPEG("Citibike.jpeg")
-
-ggplot(data.rows.counted, aes(y = start.station.latitude, x = start.station.longitude)) +
-  annotation_custom(rasterGrob(citibike, width=unit(1,"npc"), height=unit(1,"npc"))) + 
-  geom_point(aes(size = n))
-
-bike[which(bike$end.station.longitude == max(bike$end.station.longitude)),]
+######################################################
