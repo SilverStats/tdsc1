@@ -1,0 +1,21 @@
+---
+title: "Tartan Data Science Cup: Episode 1"
+author: "Maksim Horowitz, Devin Cortese, Steven Silverman"
+date: "February 21, 2016"
+output: html_document
+---
+
+Tartan Data Science Cup: Episode 1 Ride to Glory
+
+Authors: Devin Cortese, Max Horowitz, Steven Silverman
+
+# Introduction 
+
+With funding allocated to open two new Citi Bike Stands in New York City, our group was tasked with finding optimal locations for the stands to increase ridership, specifically for female ridersfor. After intitial data exploration and analysis we realized that in order to understand which areas to target we needed to understand where potential riders are located. To do so we downloaded data from the US Census Bureau containing information at the census tract level on population and demographics in New York City. We merged the census data with the given dataset to improve the accuracy and rigor of our methods resulting in our final suggestions.
+
+# Methods
+
+Starting with intitial Exploratory Data Analysis, our group examained distribution of checks 
+
+
+We omitted tract data corresponding to Staten Island and The Bronx due to their relative geographic remotness. Using the census data
