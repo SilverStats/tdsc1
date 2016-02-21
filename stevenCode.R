@@ -26,6 +26,8 @@ census <- read.csv("nycb2010wi.csv")
 
 disjoint <- grep(", \\(", census$the_geom)
 census.clean <- census[-disjoint,]
+bad.boro <- as.character(census.clean$BoroName) %in% c("Bronx", "Staten Island")
+census.clean <- subset(census.clean, bad.boro == FALSE) # remove far boroughs
 
 geom_string <- function(x) {
     clipped <- substring(x, 15, nchar(x))
@@ -47,13 +49,24 @@ stations_sp <- sapply(1:nrow(data.rows.counted),
                       function(x) { station_to_sp(data.rows.counted[x,1],
                                                   data.rows.counted[x,2]) })
 
-closest_station <- function(tract) {
+closest_station <- function(point) {
     distances <- sapply(1:length(stations_sp),
-                        function(i) { gDistance(stations_sp[[i]], tract) })
-    return(distances)
+                        function(i) { gDistance(stations_sp[[i]], point) })
+    return(head(order(distances, decreasing=FALSE),5))
     
 }
 
-census.clean.dist <- census.clean
+closest_tract <- function(point) {
+    distances <- sapply(1:length(census.clean$geom_sp),
+                        function(i) { gDistance(census.clean$geom_sp[[i]], point) })
+    return(head(order(distances, decreasing=FALSE),5))
+    
+}
 
-distances.all <- data.frame(t(sapply(census.clean.dist$geom_sp, closest_station)))
+grid_sp <- sapply(1:nrow(nyc.grid.points.df),
+                  function(x) { station_to_sp(nyc.grid.points.df[x,"Latitude"],
+                                              nyc.grid.points.df[x,"Longitude"]) })
+
+distances.stations <- data.frame(t(sapply(grid_sp, closest_station)))
+distances.tracts <- data.frame(t(sapply(grid_sp, closest_tract)))
+
