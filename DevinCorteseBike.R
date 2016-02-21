@@ -97,7 +97,7 @@ ggmap(mymap) + geom_point(aes(x = start.station.longitude,
                           data = data.rows.counted) +
   scale_color_gradient(low = "royal blue", high = "dark red",
                        name = "Square Root of Rentals") +
-  ggtitle("Number of Rentals for Each CitiBike Station") +
+  ggtitle("Number of Rentals for Each Citi Bike Station") +
   xlab("Longitude") + ylab("Latitude")
 
 bike[which(bike$end.station.longitude == max(bike$end.station.longitude)),]
