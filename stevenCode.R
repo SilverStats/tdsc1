@@ -82,4 +82,8 @@ merged.frame <- inner_join(census.clean.back, pop.cens.2010)
 
 mean.tract.people <- sapply(1:nrow(distances.tracts), function(i) {
     rows <- as.numeric(distances.tracts[i,])
-    return(mean(merged.frame$Population[rows]))})
+    return(mean(merged.frame$Population[rows]/sapply(rows, function(i) {
+        gArea(census.clean$geom_sp[i][[1]])})))}) # population density
+
+nyc.grid.points.df[which.max(mean.tract.people),]
+nyc.grid.points.df[which.max(mean.station.users),]

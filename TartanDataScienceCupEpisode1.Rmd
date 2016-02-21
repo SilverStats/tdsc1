@@ -1,13 +1,10 @@
 ---
-title: "Tartan Data Science Cup: Episode 1"
+title: "Tartan Data Science Cup Episode 1: Ride to Glory"
 author: "Maksim Horowitz, Devin Cortese, Steven Silverman"
 date: "February 21, 2016"
-output: html_document
+output: pdf_document
 ---
 
-Tartan Data Science Cup: Episode 1 Ride to Glory
-
-Authors: Devin Cortese, Max Horowitz, Steven Silverman
 
 # Introduction 
 
