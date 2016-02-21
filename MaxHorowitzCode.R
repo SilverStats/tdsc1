@@ -46,12 +46,6 @@ bike$starttimeseconds <- period_to_seconds(hms(timeonlystart))
 
 ggplot(bike, aes(x = starttimeseconds)) + geom_histogram(bins = 20,
                                           aes(alpha = ..density..))
-#<<<<<<< HEAD
-                                          
-
-min(bike$starttimeseconds)
-
-#=======
 
 ggplot(bike, aes(x = start.station.latitude, y = start.station.longitude)) +
   geom_point()
@@ -78,12 +72,36 @@ ggmap(mymap) + geom_point(aes(x = start.station.longitude,
                           y = start.station.latitude,
                           color = n),
                           data = data.rows.counted) +
-  scale_color_gradient(low = "red", high = "green")
+  scale_color_gradient(low = "red", high = "green") +ggtitle("TEST")
 
 
-<<<<<<< HEAD
-bike[which(bike$end.station.longitude == max(bike$end.station.longitude)),]
-#>>>>>>> b65f10ba442eb679d78c5d7988d4afd53321663b
-=======
 ######################################################
->>>>>>> 0ba56dba1d3484db78b3917052a5abc161bc7681
+######## Creating Grid for Location ##################
+########       Long and Lat         ##################
+
+grid.bikes.manhat <- do.call(c, lapply(1:11, FUN = function(x) {paste(x, "avenue and", 
+                                                     seq(from = 5, to = 80, by = 5),
+                                                     "Street", sep = c(" ", " ", "", " "))
+                                              }))
+
+grid.bikes.misc <- c("Cadman Plaza Park", 
+                         "Court Street and Smith Stree, Brooklyn",
+                         "Barclays Center",
+                         "Lafayette Aveneue and Washington Avenue, Brooklyn",
+                         "Court Street and Carrol Street, Brooklyn",
+                         "Broadway and South 8th Street, Brooklyn",
+                         "Bowery Street and Canal Street",
+                         "Spring Street and West Houston Street",
+                         "Fulton Street and Nevins Street, Brooklyn",
+                     "Myrtle Avenue and Nostrand Avenue, Brooklyn",
+                     "St. Johns Place and 5th Avenue, Brooklyn",
+                     "Avenue B and East 9th Street",
+                     "Greenpoint Avenue and Manhattan Avenue, Brooklyn",
+                     "Grand Street and Bushwick Avenue, Brooklyn")
+
+grid.long.lat <- geocode(c(grid.bikes, grid.bikes.misc))
+
+nyc.grid.points.df <- data.frame(Location = c(grid.bikes, grid.bikes.misc),
+                                 Longitude = grid.long.lat[,1],
+                                 Latitude = grid.long.lat[,2])
+
