@@ -20,7 +20,12 @@ We also found the number of riders who used each station (simply by counting), a
 
 We decided to keep the final location selection simple. Rather than attempting to find a weighting system and determine which of ridership and population density is more important, we just selected the grid point with the highest neighborhood population density and the grid point with the highest neighborhood bike ridership, resulting in the following locations for new bike rental stations:
 
-## PICTURE GOES HERE
+\includegraphics{FinalPlot2.jpeg}
 
+# Discussion
 
+The most interesting aspect of our analysis by far was integrating the census data. We had two separate data sets: one with coordinates denoting the borders of each tract (as polygons), plus identifying information, and another with population information and identifiers. We used the `sp` package plus some string manipulation to convert the coordinates to a usable object, then took advantage of the `gDistance` and `gArea` functions in the `rgeos` package to calculate distances between our points and the enforced points. We also had to merge the two data sets to get neighborhood population estimates for each grid point.
 
+The choices of the grid points posed another interesting problem. We decided to use points along every avenue (major north-south roads) and at every five cross streets in Manhattan proper, along with hand-selected points in Brooklyn (chosen thanks to one team member's status as a native New Yorker who knows the area quite well).
+
+We are confident in our chosen locations being good decisions. The station in West Village was surrounded by stations that had extremely high ridership numbers, signalling that they are overworked and customers may be attempting to rent bikes but arriving at empty stations. An additional dock will allow for a large increase in ridership. The second point, in the Williamsburg area of Brooklyn, is in an area with very high population density but not many bike stations, meaning an additional one will again bring a large increase in riders. Williamsburg is also a hip, up-an-coming neighborhood which may attract more young (and female) clientele than other areas.
