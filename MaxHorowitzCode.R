@@ -32,7 +32,8 @@ timeonlystart <- sapply(strsplit(as.character(bike$starttime), split = " "),
 bike$starttimeseconds <- period_to_seconds(hms(timeonlystart))
 
 ggplot(bike, aes(x = starttimeseconds)) + geom_histogram(bins = 20,
-                                          aes(alpha = ..density..)) +
+                                          aes(alpha = ..density..))
                                           
 
 min(bike$starttimeseconds)
+
